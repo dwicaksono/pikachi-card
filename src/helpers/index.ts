@@ -39,3 +39,18 @@ export async function calculateAverageColor(imageUrl: any) {
 		img.onerror = reject;
 	});
 }
+
+export const checkDataIfHasStored = (old: any, payload: any) => {
+	const dataResult = [...old, ...payload].reduce((accumulator, current) => {
+		const index = accumulator.findIndex((item: any) => item.id === current.id);
+		if (index === -1) {
+			// If the item doesn't exist in the accumulator array, add it.
+			accumulator.push(current);
+		} else {
+			// If the item exists in the accumulator array, replace it with the updated item.
+			accumulator[index] = current;
+		}
+		return accumulator;
+	}, []);
+	return dataResult;
+};

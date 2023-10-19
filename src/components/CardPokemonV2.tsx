@@ -17,7 +17,7 @@ const CardPokemonV2 = ({ name, color, imageUrl, id }: PokemonList) => {
 			onClick={() => detailHandler(id)}>
 			<div
 				style={{ backgroundColor: color }}
-				className="w-full flex flex-col justify-center ">
+				className="w-full flex flex-col justify-center backdrop-blur-lg bg-white/30 ">
 				<div className="w-full h-max overflow-hidden">
 					<img
 						src={imageUrl}

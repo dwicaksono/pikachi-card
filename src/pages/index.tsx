@@ -3,7 +3,7 @@ import Layout from "@/components/Layout";
 export default function Home() {
 	return (
 		<section className="relative flex z-10 justify-center items-center h-full group transition-all delay-300  md:overflow-x-hidden">
-			<div className="absolute z-10  w-screen bottom-24 md:bottom-0 md:w-10/12 lg:w-8/12 xl:w-6/12 lg:bottom-0 lg:right-0 md:right-0">
+			<div className="absolute z-10 w-screen bottom-24 md:bottom-0 md:w-10/12 lg:w-8/12 xl:w-6/12 lg:bottom-0 lg:right-0 md:right-0">
 				<img
 					src="./pikachu.png"
 					alt="pikachu"

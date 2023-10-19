@@ -5,15 +5,17 @@ import {
 	selectPokemons,
 	setCloseModal,
 	setLoading,
+	setMylist,
 	setStopLoading,
 } from "@/state/pokemonSlice";
-import ModalPortal from "./ModalPortal";
 import { MdOutlineCatchingPokemon } from "react-icons/md";
 import ConfettiExplosion from "react-confetti-explosion";
 import { iconDetail } from "@/constants";
+import { useRouter } from "next/navigation";
 
 const CatchPokemonModal: FC<any> = () => {
 	const dispatch = useDispatch();
+	const { push } = useRouter();
 	const { detail, isLoading } = useSelector(selectPokemons);
 	const { isModal } = useSelector(selectPokemons);
 	const [congrats, setCongrats] = useState({
@@ -45,7 +47,6 @@ const CatchPokemonModal: FC<any> = () => {
 			}
 		}, 1000);
 	};
-
 	const closeModalHandler = useCallback(() => {
 		dispatch(setCloseModal());
 		setCongrats((prev) => ({
@@ -56,8 +57,16 @@ const CatchPokemonModal: FC<any> = () => {
 		}));
 	}, [isModal]);
 
-	const saveHandler = () => {
-		closeModalHandler();
+	const saveHandler = (e: any) => {
+		e.preventDefault();
+		const val = e.currentTarget;
+		const formData = new FormData(val);
+		const payloadSave = {
+			...detail,
+			name: formData.get("name"),
+		};
+		dispatch(setMylist([payloadSave]));
+		push("/pokemons");
 	};
 
 	return (
@@ -84,17 +93,21 @@ const CatchPokemonModal: FC<any> = () => {
 			</div>
 			<div className="flex flex-col justify-center items-center">
 				{congrats.win ? (
-					<div className="w-96 flex flex-row rounded-2xl overflow-hidden">
-						<input
-							className="flex-1 outline-none px-4 text-sm"
-							placeholder="name"
-							maxLength={20}
-						/>
-						<button
-							className="px-4 py-1 text-sm font-semibold  backdrop-blur-lg bg-white/30 "
-							onClick={saveHandler}>
-							save
-						</button>
+					<div className="w-full md:w-96 flex flex-row rounded-2xl overflow-hidden">
+						<form className="w-full flex" onSubmit={saveHandler}>
+							<input
+								className="w-full h-full outline-none px-4 text-sm"
+								placeholder="name"
+								name="name"
+								maxLength={20}
+								type="text"
+							/>
+							<button
+								type="submit"
+								className="px-4 py-1 text-sm font-semibold  backdrop-blur-lg bg-white/30 ">
+								save
+							</button>
+						</form>
 					</div>
 				) : (
 					<div className="w-52 h-52 flex items-center">

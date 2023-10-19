@@ -56,6 +56,7 @@ export const getDetailPokemon = (id: string): any => {
 				type: data?.types[0].type.name,
 				imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`,
 				stats,
+				id,
 			};
 			dispatch(setDetail(payload));
 		} catch (error) {

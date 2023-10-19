@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { PokemonList, Pokemons } from "@/types";
+import { checkDataIfHasStored } from "@/helpers";
 
 const initialState: any = {
 	pokemons: [],
@@ -7,6 +8,7 @@ const initialState: any = {
 	hasMore: false,
 	isModal: false,
 	detail: {},
+	myList: [],
 };
 
 const pokemonsSlice = createSlice({
@@ -17,26 +19,17 @@ const pokemonsSlice = createSlice({
 		setStopLoading: (state) => ({ ...state, isLoading: false }),
 		setHasMore: (state, action) => ({ ...state, hasMore: action.payload }),
 		setPokemons: (state, action) => {
-			const dataReplace = [...state.pokemons, ...action.payload].reduce(
-				(accumulator, current) => {
-					const index = accumulator.findIndex(
-						(item: any) => item.id === current.id
-					);
-					if (index === -1) {
-						// If the item doesn't exist in the accumulator array, add it.
-						accumulator.push(current);
-					} else {
-						// If the item exists in the accumulator array, replace it with the updated item.
-						accumulator[index] = current;
-					}
-					return accumulator;
-				},
-				[]
-			);
+			const dataReplace = checkDataIfHasStored(state.pokemons, action.payload);
 			return {
 				...state,
 				isLoading: false,
 				pokemons: dataReplace,
+			};
+		},
+		setMylist: (state, action) => {
+			return {
+				...state,
+				myList: checkDataIfHasStored(state.myList, action.payload),
 			};
 		},
 		setDetail: (state, action) => {
@@ -69,6 +62,7 @@ export const {
 	setOpenModal,
 	setCloseModal,
 	setStopLoading,
+	setMylist,
 } = pokemonsSlice.actions;
 export const selectPokemons = (state: any) => state.pokemons;
 export default pokemonsSlice.reducer;
